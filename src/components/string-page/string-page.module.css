@@ -1,0 +1,17 @@
+.result {
+  align-self: center;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  max-width: 1040px;
+  margin: auto;
+}
+
+.form {
+  display: flex;
+  gap: 12px;
+  margin: 0 auto 120px;
+  max-width: 522px;
+  width: 100%;
+}
