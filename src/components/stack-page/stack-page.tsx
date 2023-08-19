@@ -2,6 +2,7 @@ import {
   ChangeEventHandler,
   FC,
   FormEventHandler,
+  ReactEventHandler,
   useMemo,
   useState,
 } from "react";
@@ -11,31 +12,55 @@ import { Input } from "../ui/input/input";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { Circle } from "../ui/circle/circle";
 import { nanoid } from "nanoid";
-import { changeCircleColor, delay, swap } from "../../helpers/utils";
-import { DELAY_IN_MS } from "../../constants/delays";
+import { delay } from "../../helpers/utils";
+import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 import { Stack } from "./stack";
+import { ElementStates } from "../../types/element-states";
 
 export const StackPage: FC = () => {
+  type stackStateType = "" | "add" | "delete" | "clear";
+
   const [value, setValue] = useState<string>("");
-  const [valuesArray, setValuesArray] = useState<string[]>([]);
-  const [resultVisibility, setResultVisibility] = useState<boolean>(false);
-  const [isFormSubmitted, setIsFormSubmitted] = useState<boolean>(false);
+  const [isDataLoading, setIsDataLoading] = useState<boolean>(false);
+  const [stackState, setStackState] = useState<stackStateType>("");
 
   const stack = useMemo(() => new Stack<string>(), []);
+
+  const isStackVisible = useMemo(() => {
+    return stack.stackArray.length > 0;
+  }, [stack.stackArray.length]);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setValue(e.currentTarget.value);
   };
   const putOnStack: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    setIsFormSubmitted(true);
+    setIsDataLoading(true);
+    setStackState("add");
+    await delay(SHORT_DELAY_IN_MS);
     stack.push(value);
     setValue("");
+    setIsDataLoading(false);
+    setStackState("");
   };
 
-  const removeFromStack: FormEventHandler<HTMLFormElement> = async (e) => {};
+  const removeFromStack: ReactEventHandler<HTMLButtonElement> = async (e) => {
+    setIsDataLoading(true);
+    setStackState("delete");
+    await delay(SHORT_DELAY_IN_MS);
+    stack.pop();
+    setIsDataLoading(false);
+    setStackState("");
+  };
 
-  const clearStack = () => {};
+  const clearStack = async () => {
+    setIsDataLoading(true);
+    setStackState("clear");
+    await delay(SHORT_DELAY_IN_MS);
+    stack.clear();
+    setIsDataLoading(false);
+    setStackState("");
+  };
 
   return (
     <SolutionLayout title="Стек">
@@ -48,38 +73,45 @@ export const StackPage: FC = () => {
             isLimitText={true}
             type={"textAltEndind"}
             extraClass={styles.input}
-            disabled={isFormSubmitted}
+            disabled={isDataLoading}
           />
           <Button
             type={"submit"}
             text={"Добавить"}
-            isLoader={isFormSubmitted}
-            disabled={isFormSubmitted || !value}
+            isLoader={stackState === "add"}
+            disabled={!value}
           />
 
           <Button
             type={"button"}
             text={"Удалить"}
-            isLoader={isFormSubmitted}
-            disabled={isFormSubmitted || !value}
+            isLoader={stackState === "delete"}
+            disabled={!isStackVisible}
+            onClick={removeFromStack}
           />
         </div>
 
         <Button
           type={"reset"}
           text={"Очистить"}
-          isLoader={isFormSubmitted}
-          disabled={isFormSubmitted || !value}
+          isLoader={stackState === "clear"}
+          disabled={!isStackVisible}
+          onClick={clearStack}
         />
       </form>
 
       <div className={styles.result}>
-        {resultVisibility ? (
-          valuesArray.map((item: string, index: number) => (
+        {isStackVisible ? (
+          stack.stackArray.map((item: string, index: number) => (
             <Circle
-              // state={changeCircleColor(firstPointer, secondPointer, index)}
               letter={item}
               key={nanoid()}
+              head={stack.stackArray.length - 1 === index ? "top" : ""}
+              state={
+                stackState !== "" && index === stack.stackArray.length - 1
+                  ? ElementStates.Changing
+                  : ElementStates.Default
+              }
             />
           ))
         ) : (

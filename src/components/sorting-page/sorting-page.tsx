@@ -15,78 +15,99 @@ import { changeCircleColor, delay, swap } from "../../helpers/utils";
 import { DELAY_IN_MS } from "../../constants/delays";
 import { RadioInput } from "../ui/radio-input/radio-input";
 import { createRandomArray } from "./utils/createRandomArray";
+import { Column } from "../ui/column/column";
 
 export const SortingPage: FC = () => {
   const [value, setValue] = useState<string>("");
   const [valuesArray, setValuesArray] = useState<string[]>([]);
   const [resultVisibility, setResultVisibility] = useState<boolean>(false);
   const [isFormSubmitted, setIsFormSubmitted] = useState<boolean>(false);
-  const [firstPointer, setFirstPointer] = useState<number>(0);
-  const [secondPointer, setSecondPointer] = useState<number>(0);
 
-  const reverseInput = async () => {
-    let start = 0;
-    let end = valuesArray.length - 1;
-    while (start < end) {
-      setFirstPointer(start);
-      setSecondPointer(end);
-      await delay(DELAY_IN_MS);
-      swap(valuesArray, start, end);
-      setValuesArray(valuesArray);
-      start++;
-      end--;
-    }
-    setFirstPointer(valuesArray.length);
-    setSecondPointer(valuesArray.length);
-    setIsFormSubmitted(false);
+  type SortElement = {
+    readonly id: string;
+    value: number;
+    // state: ElementStatesVariety;
   };
+
+  const [sortArray, setSortArray] = useState<SortElement[]>([]);
+
+  const [sortingAlgo, setSortingAlgo] = useState<"selection" | "bubble">(
+    "selection"
+  );
+  const [sortDirection, setSortDirection] = useState<
+    "ascending" | "descending"
+  >("ascending");
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setValue(e.currentTarget.value);
     setValuesArray(e.currentTarget.value.split(""));
     setResultVisibility(false);
-    setFirstPointer(0);
-    setSecondPointer(valuesArray.length - 1);
   };
 
   const createArray: ReactEventHandler<HTMLButtonElement> = () => {
-    console.log(
-      createRandomArray({
-        minLength: 3,
-        maxLength: 17,
-        minValue: 0,
-        maxValue: 100,
-      })
-    );
+    const array = createRandomArray({
+      minLength: 3,
+      maxLength: 17,
+      minValue: 0,
+      maxValue: 100,
+    });
+    setSortArray(array);
+  };
+
+  const handleAscending: ReactEventHandler<HTMLButtonElement> = async () => {
+    setSortDirection("ascending");
+    /*await startSorting({
+      array: sortArray,
+      direction: Direction.Ascending,
+      type: sortType,
+    }); */
+  };
+
+  const handleDescending: ReactEventHandler<HTMLButtonElement> = async () => {
+    setSortDirection("descending");
+    /*  await startSorting({
+      array: sortArray,
+      direction: Direction.Descending,
+      type: sortType,
+    }); */
   };
 
   return (
     <SolutionLayout title="Строка">
       <form className={styles.form}>
         <fieldset>
-          <RadioInput label={"Выбор"} defaultChecked />
-          <RadioInput label={"Пузырёк"} />
+          <RadioInput
+            name="algo"
+            label={"Выбор"}
+            defaultChecked
+            onChange={() => setSortingAlgo("selection")}
+          />
+          <RadioInput
+            name="algo"
+            label={"Пузырёк"}
+            onChange={() => setSortingAlgo("bubble")}
+          />
         </fieldset>
 
         <fieldset>
-          <Button type={"button"} text={"По возрастанию"} />
-          <Button type={"button"} text={"По убыванию"} />
+          <Button
+            type={"button"}
+            text={"По возрастанию"}
+            onClick={handleAscending}
+          />
+          <Button
+            type={"button"}
+            text={"По убыванию"}
+            onClick={handleDescending}
+          />
           <Button type={"button"} text={"Новый массив"} onClick={createArray} />
         </fieldset>
       </form>
 
       <div className={styles.result}>
-        {resultVisibility ? (
-          valuesArray.map((item: string, index: number) => (
-            <Circle
-              state={changeCircleColor(firstPointer, secondPointer, index)}
-              letter={item}
-              key={nanoid()}
-            />
-          ))
-        ) : (
-          <></>
-        )}
+        {sortArray?.map((item) => (
+          <Column key={item.id} index={item.value} />
+        ))}
       </div>
     </SolutionLayout>
   );

@@ -5,7 +5,7 @@ interface IStack<T> {
 }
 
 export class Stack<T> implements IStack<T> {
-  private stackArray: T[] = [];
+  /*private */ stackArray: T[] = [];
 
   push(item: T): void {
     this.stackArray.push(item);
