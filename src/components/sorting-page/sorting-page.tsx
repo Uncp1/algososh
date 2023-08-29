@@ -12,10 +12,12 @@ import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { Circle } from "../ui/circle/circle";
 import { nanoid } from "nanoid";
 import { changeCircleColor, delay, swap } from "../../helpers/utils";
-import { DELAY_IN_MS } from "../../constants/delays";
+import { DELAY_IN_MS, SHORT_DELAY_IN_MS } from "../../constants/delays";
 import { RadioInput } from "../ui/radio-input/radio-input";
 import { createRandomArray } from "./utils/createRandomArray";
 import { Column } from "../ui/column/column";
+import { bubbleSort } from "./utils/bubbleSort";
+import { SortElementType } from "./utils/changeColor";
 
 export const SortingPage: FC = () => {
   const [value, setValue] = useState<string>("");
@@ -53,29 +55,41 @@ export const SortingPage: FC = () => {
     });
     setSortArray(array);
   };
+  interface ISortOptions {
+    array: any;
+    direction: "ascending" | "descending";
+  }
+  const startSorting = async (sortOptions: ISortOptions) => {
+    sortingAlgo === "selection"
+      ? console.log()
+      : //(arraySortingMap = sortWithSelection(sortOptions))
+        bubbleSort(sortOptions);
+
+    //setIsSortInProgress(false);
+  };
 
   const handleAscending: ReactEventHandler<HTMLButtonElement> = async () => {
     setSortDirection("ascending");
-    /*await startSorting({
+    await startSorting({
       array: sortArray,
-      direction: Direction.Ascending,
-      type: sortType,
-    }); */
+      direction: "ascending",
+    });
   };
 
   const handleDescending: ReactEventHandler<HTMLButtonElement> = async () => {
     setSortDirection("descending");
-    /*  await startSorting({
+    await startSorting({
       array: sortArray,
-      direction: Direction.Descending,
-      type: sortType,
-    }); */
+      direction: "descending",
+    });
   };
 
   return (
     <SolutionLayout title="Строка">
       <form className={styles.form}>
-        <fieldset>
+        <fieldset
+          className={`${styles.form_fieldset} ${styles.form_fieldset_type_radio}`}
+        >
           <RadioInput
             name="algo"
             label={"Выбор"}
@@ -89,7 +103,9 @@ export const SortingPage: FC = () => {
           />
         </fieldset>
 
-        <fieldset>
+        <fieldset
+          className={`${styles.form_fieldset} ${styles.form_fieldset_type_buttons}`}
+        >
           <Button
             type={"button"}
             text={"По возрастанию"}
@@ -100,7 +116,12 @@ export const SortingPage: FC = () => {
             text={"По убыванию"}
             onClick={handleDescending}
           />
-          <Button type={"button"} text={"Новый массив"} onClick={createArray} />
+          <Button
+            type={"button"}
+            text={"Новый массив"}
+            onClick={createArray}
+            extraClass={styles.form_reset}
+          />
         </fieldset>
       </form>
 

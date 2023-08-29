@@ -104,6 +104,7 @@ export const StackPage: FC = () => {
         {isStackVisible ? (
           stack.stackArray.map((item: string, index: number) => (
             <Circle
+              index={index}
               letter={item}
               key={nanoid()}
               head={stack.stackArray.length - 1 === index ? "top" : ""}

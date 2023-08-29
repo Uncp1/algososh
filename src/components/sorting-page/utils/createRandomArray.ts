@@ -9,16 +9,22 @@ interface IRndArray {
 }
 
 export const createRandomArray = ({
-  minLength = 3,
-  maxLength = 17,
-  minValue = 0,
-  maxValue = 100,
+  minLength,
+  maxLength,
+  minValue,
+  maxValue,
 }: IRndArray) => {
   const arr = [];
-  const arrLength = Math.random() * (maxLength - minLength) + minLength;
+  const arrLength = Math.round(
+    Math.random() * (maxLength - minLength) + minLength
+  );
 
   for (let i = 0; i < arrLength; i++) {
-    const elementValue = Math.random() * (maxValue - minValue) + maxValue;
+    const elementValue = Math.round(
+      Math.random() * (maxValue - minValue) + minValue
+    );
+    console.log();
+
     const element = {
       id: nanoid(),
       value: elementValue,
