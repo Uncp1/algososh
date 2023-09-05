@@ -20,6 +20,8 @@ import { bubbleSort } from "./utils/bubbleSort";
 import { SortElementType } from "./utils/changeColor";
 
 export const SortingPage: FC = () => {
+  
+
   const [value, setValue] = useState<string>("");
   const [valuesArray, setValuesArray] = useState<string[]>([]);
   const [resultVisibility, setResultVisibility] = useState<boolean>(false);
