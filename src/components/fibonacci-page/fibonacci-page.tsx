@@ -6,12 +6,12 @@ import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { Circle } from "../ui/circle/circle";
 import { nanoid } from "nanoid";
 import { delay } from "../../helpers/utils";
-import { SHORT_DELAY_IN_MS } from "../../constants/delays";
+import { DELAY_IN_MS } from "../../constants/delays";
 
 export const FibonacciPage: React.FC = () => {
   const [value, setValue] = useState<number | string>("");
   const [valuesArray, setValuesArray] = useState<number[]>([]);
-  const [index, setIndex] = useState<number>(0);
+
   const [resultVisibility, setResultVisibility] = useState<boolean>(false);
   const [isFormSubmitted, setIsFormSubmitted] = useState<boolean>(false);
 
@@ -27,18 +27,17 @@ export const FibonacciPage: React.FC = () => {
 
     let i = 0;
     while (i <= value) {
-      valuesArray.push(fibonacciArray[i]);
-      setIndex(i);
-      await delay(SHORT_DELAY_IN_MS);
+      setValuesArray((arr) => [...arr, fibonacciArray[i]]); // rerender circles
+      await delay(DELAY_IN_MS);
       i++;
     }
     setIsFormSubmitted(false);
-    setValuesArray([]);
   };
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setValue(e.currentTarget.value);
     setResultVisibility(false);
+    if (valuesArray !== []) setValuesArray([]);
   };
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
@@ -61,6 +60,7 @@ export const FibonacciPage: React.FC = () => {
           placeholder={"Введите число"}
           extraClass={styles.input}
           disabled={isFormSubmitted}
+          autoComplete={"off"}
         />
         <Button
           type={"submit"}
@@ -72,7 +72,7 @@ export const FibonacciPage: React.FC = () => {
 
       <div className={styles.result}>
         {resultVisibility ? (
-          valuesArray.map((item: number) => (
+          valuesArray.map((item: number, index: number) => (
             <Circle index={index} letter={item.toString()} key={nanoid()} />
           ))
         ) : (

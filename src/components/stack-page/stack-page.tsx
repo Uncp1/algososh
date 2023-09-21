@@ -37,8 +37,9 @@ export const StackPage: FC = () => {
     e.preventDefault();
     setIsDataLoading(true);
     setStackState("add");
-    await delay(SHORT_DELAY_IN_MS);
     stack.push(value);
+    await delay(SHORT_DELAY_IN_MS);
+
     setValue("");
     setIsDataLoading(false);
     setStackState("");
@@ -74,6 +75,7 @@ export const StackPage: FC = () => {
             type={"textAltEndind"}
             extraClass={styles.input}
             disabled={isDataLoading}
+            autoComplete={"off"}
           />
           <Button
             type={"submit"}
@@ -109,7 +111,9 @@ export const StackPage: FC = () => {
               key={nanoid()}
               head={stack.stackArray.length - 1 === index ? "top" : ""}
               state={
-                stackState !== "" && index === stack.stackArray.length - 1
+                stackState === "clear"
+                  ? ElementStates.Changing
+                  : stackState !== "" && index === stack.stackArray.length - 1
                   ? ElementStates.Changing
                   : ElementStates.Default
               }

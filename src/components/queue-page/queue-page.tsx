@@ -19,50 +19,56 @@ import { ElementStates } from "../../types/element-states";
 import { Queue } from "./queue";
 
 export const QueuePage: FC = () => {
-  type stackStateType = "" | "add" | "delete" | "clear";
-  const [stackState, setStackState] = useState<stackStateType>("");
+  type QueueType = "" | "add" | "delete" | "clear";
+  const [queueState, setQueueState] = useState<QueueType>("");
   const [value, setValue] = useState<string>("");
   const [isDataLoading, setIsDataLoading] = useState<boolean>(false);
 
   const queue = useMemo(() => new Queue<string>(7), []);
 
-  const isStackVisible = true; //
-
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setValue(e.currentTarget.value);
   };
-  const putOnStack: FormEventHandler<HTMLFormElement> = async (e) => {
+  const addToQueue: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     setIsDataLoading(true);
-    setStackState("add");
-    await delay(SHORT_DELAY_IN_MS);
+    setQueueState("add");
     queue.enqueue(value);
+    await delay(SHORT_DELAY_IN_MS);
     setValue("");
     setIsDataLoading(false);
-    setStackState("");
+    setQueueState("");
   };
 
   const removeFromStack: ReactEventHandler<HTMLButtonElement> = async (e) => {
     setIsDataLoading(true);
-    setStackState("delete");
+    setQueueState("delete");
     await delay(SHORT_DELAY_IN_MS);
     queue.dequeue();
     setIsDataLoading(false);
-    setStackState("");
+    setQueueState("");
   };
 
   const clearStack = async () => {
     setIsDataLoading(true);
-    setStackState("clear");
+    setQueueState("clear");
     await delay(SHORT_DELAY_IN_MS);
     queue.clear();
     setIsDataLoading(false);
-    setStackState("");
+    setQueueState("");
   };
 
+  const determineState = (item: string, index: number) => {
+    if (queueState === "clear" && item) return ElementStates.Changing;
+    if (queueState === "add" && index === queue.tail - 1)
+      return ElementStates.Changing;
+    if (queueState === "delete" && index === queue.head)
+      return ElementStates.Changing;
+    return ElementStates.Default;
+  };
   return (
     <SolutionLayout title="Очередь">
-      <form onSubmit={putOnStack} className={styles.form}>
+      <form onSubmit={addToQueue} className={styles.form}>
         <div className={styles.inputs}>
           <Input
             onChange={handleChange}
@@ -76,15 +82,15 @@ export const QueuePage: FC = () => {
           <Button
             type={"submit"}
             text={"Добавить"}
-            isLoader={stackState === "add"}
+            isLoader={queueState === "add"}
             disabled={!value}
           />
 
           <Button
             type={"button"}
             text={"Удалить"}
-            isLoader={stackState === "delete"}
-            disabled={!isStackVisible}
+            isLoader={queueState === "delete"}
+            disabled={false}
             onClick={removeFromStack}
           />
         </div>
@@ -92,24 +98,22 @@ export const QueuePage: FC = () => {
         <Button
           type={"reset"}
           text={"Очистить"}
-          isLoader={stackState === "clear"}
-          disabled={!isStackVisible}
+          isLoader={queueState === "clear"}
+          disabled={false}
           onClick={clearStack}
         />
       </form>
 
       <div className={styles.result}>
-        {isStackVisible ? (
-          queue.queueArray.map((item: string, index: number) => (
-            <Circle
-              letter={item}
-              key={nanoid()}
-              // head={stack.stackArray.length - 1 === index ? "top" : ""}
-            />
-          ))
-        ) : (
-          <></>
-        )}
+        {queue.queueArray.map((item: string, index: number) => (
+          <Circle
+            letter={item}
+            key={nanoid()}
+            head={item && queue.head === index ? "head" : ""}
+            tail={item && queue.tail - 1 === index ? "tail" : ""}
+            state={determineState(item, index)}
+          />
+        ))}
       </div>
     </SolutionLayout>
   );
