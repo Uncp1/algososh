@@ -16,10 +16,19 @@ export const Input: React.FC<InputProps> = ({
   isLimitText = false,
   ...rest
 }) => {
-  const limitText =
-    type === "text"
-      ? `Максимум — ${maxLength} символа`
-      : `Максимальное число — ${max}`;
+  let limitText;
+
+  switch (type) {
+    case "text":
+      limitText = `Максимум — ${maxLength} символов`;
+      break;
+    case "textAltEndind":
+      limitText = `Максимум — ${maxLength} символа`;
+      break;
+    default:
+      limitText = `Максимальное число — ${max}`;
+      break;
+  }
 
   return (
     <div className={`${styles.content} ${extraClass}`}>
