@@ -1,5 +1,5 @@
 import { nanoid } from "nanoid";
-import { ElementStates } from "../../../types/element-states";
+import { ElementStates } from "../../../types/states";
 
 interface IRndArray {
   minLength: number;
@@ -23,8 +23,6 @@ export const createRandomArray = ({
     const elementValue = Math.round(
       Math.random() * (maxValue - minValue) + minValue
     );
-    console.log();
-
     const element = {
       id: nanoid(),
       value: elementValue,
@@ -32,6 +30,5 @@ export const createRandomArray = ({
     };
     arr.push(element);
   }
-
   return arr;
 };

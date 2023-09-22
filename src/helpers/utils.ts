@@ -1,4 +1,4 @@
-import { ElementStates } from "../types/element-states";
+import { ElementStates } from "../types/states";
 
 export const swap = (array: unknown[], start: number, end: number): void => {
   const temp = array[start];

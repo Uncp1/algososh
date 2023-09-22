@@ -1,12 +1,9 @@
-import { ElementStates } from "../../../types/element-states";
-import { changeColor, SortElementType } from "./utils";
+import { swap } from "../../../helpers/utils";
+import { Direction } from "../../../types/direction";
+import { ElementStates } from "../../../types/states";
+import { changeColor, SortArrayType, SortElementType } from "./utils";
 
-interface ISortArrayType {
-  array: SortElementType[];
-  direction: "descending" | "ascending";
-}
-
-export const bubbleSort = ({ array, direction }: ISortArrayType) => {
+export const bubbleSort = ({ array, direction }: SortArrayType) => {
   let arraySortingMap: SortElementType[][] = [];
 
   for (let i = array!.length - 1; i >= 0; i--) {
@@ -14,16 +11,18 @@ export const bubbleSort = ({ array, direction }: ISortArrayType) => {
       array[j] = changeColor(array[j], ElementStates.Changing);
       array[j + 1] = changeColor(array[j + 1], ElementStates.Changing);
       arraySortingMap.push([...array]);
-      if (direction === "descending" && array[j].value < array[j + 1].value) {
-        const temp = array[j];
-        array[j] = array[j + 1];
-        array[j + 1] = temp;
+      if (
+        direction === Direction.Descending &&
+        array[j].value < array[j + 1].value
+      ) {
+        swap(array, j, j + 1);
         arraySortingMap.push([...array]);
       }
-      if (direction === "ascending" && array[j].value > array[j + 1].value) {
-        const temp = array[j];
-        array[j] = array[j + 1];
-        array[j + 1] = temp;
+      if (
+        direction === Direction.Ascending &&
+        array[j].value > array[j + 1].value
+      ) {
+        swap(array, j, j + 1);
         arraySortingMap.push([...array]);
       }
       array[j] = changeColor(array[j], ElementStates.Default);

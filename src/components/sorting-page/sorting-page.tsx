@@ -1,24 +1,17 @@
-import {
-  ChangeEventHandler,
-  FC,
-  FormEventHandler,
-  ReactEventHandler,
-  useState,
-} from "react";
+import { FC, ReactEventHandler, useState } from "react";
 import styles from "./sorting-page.module.css";
 import { Button } from "../ui/button/button";
-import { Input } from "../ui/input/input";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
-import { nanoid } from "nanoid";
-import { changeCircleColor, delay, swap } from "../../helpers/utils";
-import { DELAY_IN_MS, SHORT_DELAY_IN_MS } from "../../constants/delays";
+import { delay } from "../../helpers/utils";
+import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 import { RadioInput } from "../ui/radio-input/radio-input";
 import { createRandomArray } from "./utils/createRandomArray";
 import { Column } from "../ui/column/column";
 import { bubbleSort } from "./utils/bubbleSort";
 import { SortArrayType, SortElementType } from "./utils/utils";
-import { ElementStates } from "../../types/element-states";
 import { selectionSort } from "./utils/selectionSort";
+import { ElementStates } from "../../types/states";
+import { Direction } from "../../types/direction";
 
 export const SortingPage: FC = () => {
   const [isSortingInProgress, setIsSortingInProgress] =
@@ -28,33 +21,32 @@ export const SortingPage: FC = () => {
     "selection"
   );
   const [sortDirection, setSortDirection] = useState<
-    "ascending" | "descending"
-  >("ascending");
+    Direction.Ascending | Direction.Descending
+  >(Direction.Ascending);
 
   const createArray: ReactEventHandler<HTMLButtonElement> = () => {
-    setValuesArray(
-      createRandomArray({
-        minLength: 3,
-        maxLength: 17,
-        minValue: 0,
-        maxValue: 100,
-      })
-    );
+    const newArray = createRandomArray({
+      minLength: 3,
+      maxLength: 17,
+      minValue: 0,
+      maxValue: 100,
+    });
+    setValuesArray(newArray);
   };
 
   const handleAscending: ReactEventHandler<HTMLButtonElement> = async () => {
-    setSortDirection("ascending");
+    setSortDirection(Direction.Ascending);
     await startSorting({
       array: valuesArray,
-      direction: "ascending",
+      direction: Direction.Ascending,
     });
   };
 
   const handleDescending: ReactEventHandler<HTMLButtonElement> = async () => {
-    setSortDirection("descending");
+    setSortDirection(Direction.Descending);
     await startSorting({
       array: valuesArray,
-      direction: "descending",
+      direction: Direction.Descending,
     });
   };
 
@@ -62,6 +54,10 @@ export const SortingPage: FC = () => {
     setIsSortingInProgress(true);
     let i = 0;
     let arrayMap: SortElementType[][];
+
+    valuesArray.forEach((el) => {
+      return (el.state = ElementStates.Default);
+    }); //change colour for subsequent sorting
 
     sortingAlgo === "selection"
       ? (arrayMap = selectionSort(sortOptions))
@@ -100,16 +96,22 @@ export const SortingPage: FC = () => {
           <Button
             type={"button"}
             text={"По возрастанию"}
+            sorting={Direction.Ascending}
             onClick={handleAscending}
             disabled={valuesArray.length === 0 || isSortingInProgress}
-            isLoader={isSortingInProgress && sortDirection === "ascending"}
+            isLoader={
+              isSortingInProgress && sortDirection === Direction.Ascending
+            }
           />
           <Button
             type={"button"}
             text={"По убыванию"}
+            sorting={Direction.Descending}
             onClick={handleDescending}
             disabled={valuesArray.length === 0 || isSortingInProgress}
-            isLoader={isSortingInProgress && sortDirection === "descending"}
+            isLoader={
+              isSortingInProgress && sortDirection === Direction.Descending
+            }
           />
           <Button
             type={"button"}

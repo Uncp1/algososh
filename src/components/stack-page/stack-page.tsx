@@ -15,7 +15,7 @@ import { nanoid } from "nanoid";
 import { delay } from "../../helpers/utils";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 import { Stack } from "./stack";
-import { ElementStates } from "../../types/element-states";
+import { ElementStates } from "../../types/states";
 
 export const StackPage: FC = () => {
   type stackStateType = "" | "add" | "delete" | "clear";

@@ -15,7 +15,7 @@ import { nanoid } from "nanoid";
 import { delay } from "../../helpers/utils";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 
-import { ElementStates } from "../../types/element-states";
+import { ElementStates } from "../../types/states";
 import { Queue } from "./queue";
 
 export const QueuePage: FC = () => {

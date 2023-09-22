@@ -1,4 +1,4 @@
-import { ElementStates } from "../../../types/element-states";
+import { ElementStates } from "../../../types/states";
 
 export type SortElementType = {
   readonly id: string;
