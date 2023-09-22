@@ -1,0 +1,25 @@
+.form {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: space-between;
+  margin: 0 auto 90px;
+  max-width: 952px;
+}
+
+.form__fieldset {
+  border: none;
+  display: flex;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+}
+
+.form__input {
+  max-width: 204px;
+}
+
+.form__button_type_index {
+  width: 100%;
+}

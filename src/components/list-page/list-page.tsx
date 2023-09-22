@@ -1,4 +1,10 @@
-import { ChangeEventHandler, FC, FormEventHandler, useState } from "react";
+import {
+  ChangeEventHandler,
+  FC,
+  FormEventHandler,
+  useMemo,
+  useState,
+} from "react";
 import styles from "./lsit-page.module.css";
 import { Button } from "../ui/button/button";
 import { Input } from "../ui/input/input";
@@ -6,15 +12,28 @@ import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { Circle } from "../ui/circle/circle";
 import { nanoid } from "nanoid";
 import { changeCircleColor, delay, swap } from "../../helpers/utils";
-import { DELAY_IN_MS } from "../../constants/delays";
+import { DELAY_IN_MS, SHORT_DELAY_IN_MS } from "../../constants/delays";
+import { LinkedList, LinkedListNode } from "./linked-list";
 
 export const ListPage: FC = () => {
   const [value, setValue] = useState<string>("");
+  const [index, setIndex] = useState<string>("");
   const [valuesArray, setValuesArray] = useState<string[]>([]);
   const [resultVisibility, setResultVisibility] = useState<boolean>(false);
-  const [isFormSubmitted, setIsFormSubmitted] = useState<boolean>(false);
+  const [isFormSubmitting, setIsFormSubmitting] = useState<boolean>(false);
   const [firstPointer, setFirstPointer] = useState<number>(0);
   const [secondPointer, setSecondPointer] = useState<number>(0);
+
+  const list = useMemo(() => new LinkedList<string>(), []);
+  console.log(list);
+
+  const handleAddNewHead = async () => {
+    setIsFormSubmitting(true);
+    await delay(SHORT_DELAY_IN_MS);
+    list.prepend(value);
+    await delay(SHORT_DELAY_IN_MS);
+    setIsFormSubmitting(false);
+  };
 
   const reverseInput = async () => {
     let start = 0;
@@ -30,7 +49,7 @@ export const ListPage: FC = () => {
     }
     setFirstPointer(valuesArray.length);
     setSecondPointer(valuesArray.length);
-    setIsFormSubmitted(false);
+    setIsFormSubmitting(false);
   };
   /*
   const handleAddNewHead: ReactEventHandler<HTMLButtonElement> = async () => {
@@ -54,14 +73,14 @@ export const ListPage: FC = () => {
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     setResultVisibility(true);
-    setIsFormSubmitted(true);
+    setIsFormSubmitting(true);
     setValue("");
     await reverseInput();
   }; */
   return (
     <SolutionLayout title="Связный список">
       <form className={styles.form}>
-        <fieldset className={`${styles.form_fieldset}`}>
+        <fieldset className={styles.form__fieldset}>
           <Input
             disabled={
               false //    isFormSubmitting || array.length >= LIST_MAX_LENGTH_LINKED_LIST
@@ -70,7 +89,7 @@ export const ListPage: FC = () => {
             //maxLength={INPUT_MAX_LENGTH_LINKED_LIST}
             isLimitText={true}
             // onChange={(e) => setInputValue(e.currentTarget.value)}
-            extraClass={styles.form_input}
+            extraClass={styles.form__input}
             placeholder={"Введите значение"}
           />
           <Button
@@ -79,7 +98,7 @@ export const ListPage: FC = () => {
             type={"button"}
             text={"Добавить в head"}
             extraClass={`${styles.form_button}`}
-            //  onClick={handleAddNewHead}
+            onClick={handleAddNewHead}
           />
           <Button
             // disabled={isFormSubmitting || !inputValue}
@@ -106,9 +125,7 @@ export const ListPage: FC = () => {
             //onClick={handleDeleteTail}
           />
         </fieldset>
-        <fieldset
-          className={`${styles.form_fieldset} ${styles.form_fieldset_type_index}`}
-        >
+        <fieldset className={styles.form__fieldset}>
           <Input
             //disabled={array.length === 0 || isFormSubmitting}
             //value={inputIndex}
@@ -116,7 +133,7 @@ export const ListPage: FC = () => {
             // min={LIST_MIN_INDEX_LINKED_LIST}
             //  max={array.length > 1 ? array.length - 1 : " 0 "}
             type={"number"}
-            extraClass={styles.form_input}
+            extraClass={styles.form__input}
             placeholder={"Введите индекс"}
           />
           <Button
@@ -130,27 +147,33 @@ export const ListPage: FC = () => {
             //  isLoader={solutionState === LinkedListStateVariety.AddByIndex}
             type={"button"}
             text={"Добавить по индексу"}
-            extraClass={`${styles.form_button} ${styles.form_button_type_index}`}
+            extraClass={styles.form__button_type_index}
+
             // onClick={handleAddByIndex}
           />
           <Button
             text={"Удалить по индексу"}
-            extraClass={`${styles.form_button} ${styles.form_button_type_index}`}
+            extraClass={styles.form__button_type_index}
           />
         </fieldset>
       </form>
       <ul className={styles.wrapper}>
-        {/* array.length > 0 ? (
-          array.map((item: LinkedListNode<string>, index) => (
+        {valuesArray.length > 0 ? (
+          valuesArray.map((item: any, index: number) => (
             <li className={styles.wrapper_element} key={index}>
               <Circle
-                state={findState(item, index)}
-                tail={setTail(item, index)}
-                head={setHead(item, index, inputValue)}
-                index={index}
-                letter={findCircleValue(item, index)}
+              //insert your dick here
               />
-              {!(array.length - 1 === index) && (
+            </li>
+          ))
+        ) : (
+          <></>
+        )}
+      </ul>
+    </SolutionLayout>
+  );
+};
+/* {!(array.length - 1 === index) && (
                 <ArrowIcon
                   fill={
                     changingIndex &&
@@ -160,13 +183,14 @@ export const ListPage: FC = () => {
                       : COLOR_DEFAULT
                   }
                 />
-              )}
-            </li>
-          ))
-        ) : (
-          <></>
-        )*/}
-      </ul>
-    </SolutionLayout>
-  );
-};
+              )} */
+
+/*
+
+                state={findState(item, index)}
+                tail={setTail(item, index)}
+                head={setHead(item, index, inputValue)}
+                index={index}
+                letter={findCircleValue(item, index)}
+
+              */
