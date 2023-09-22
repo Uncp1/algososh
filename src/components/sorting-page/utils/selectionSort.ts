@@ -6,28 +6,28 @@ interface ISortArrayType {
   direction: "descending" | "ascending";
 }
 
-export const bubbleSort = ({ array, direction }: ISortArrayType) => {
+export const selectionSort = ({ array, direction }: ISortArrayType) => {
   let arraySortingMap: SortElementType[][] = [];
 
-  for (let i = array!.length - 1; i >= 0; i--) {
-    for (let j = 0; j < i; j++) {
+  for (let i = 0; i < array.length; i++) {
+    for (let j = i + 1; j < array.length; j++) {
+      array[i] = changeColor(array[i], ElementStates.Changing);
       array[j] = changeColor(array[j], ElementStates.Changing);
-      array[j + 1] = changeColor(array[j + 1], ElementStates.Changing);
       arraySortingMap.push([...array]);
-      if (direction === "descending" && array[j].value < array[j + 1].value) {
-        const temp = array[j];
-        array[j] = array[j + 1];
-        array[j + 1] = temp;
+      if (direction === "descending" && array[j].value > array[i].value) {
+        const temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
         arraySortingMap.push([...array]);
       }
-      if (direction === "ascending" && array[j].value > array[j + 1].value) {
-        const temp = array[j];
-        array[j] = array[j + 1];
-        array[j + 1] = temp;
+      if (direction === "ascending" && array[j].value < array[i].value) {
+        const temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
         arraySortingMap.push([...array]);
       }
+      array[i] = changeColor(array[i], ElementStates.Default);
       array[j] = changeColor(array[j], ElementStates.Default);
-      array[j + 1] = changeColor(array[j + 1], ElementStates.Default);
       arraySortingMap.push([...array]);
     }
     array[i] = changeColor(array[i], ElementStates.Modified);

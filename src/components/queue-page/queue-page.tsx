@@ -83,14 +83,14 @@ export const QueuePage: FC = () => {
             type={"submit"}
             text={"Добавить"}
             isLoader={queueState === "add"}
-            disabled={!value}
+            disabled={!value && queue.length === 7} // ungaBunga
           />
 
           <Button
             type={"button"}
             text={"Удалить"}
             isLoader={queueState === "delete"}
-            disabled={false}
+            disabled={queue.length === 0}
             onClick={removeFromStack}
           />
         </div>
@@ -99,7 +99,7 @@ export const QueuePage: FC = () => {
           type={"reset"}
           text={"Очистить"}
           isLoader={queueState === "clear"}
-          disabled={false}
+          disabled={queue.length === 0}
           onClick={clearStack}
         />
       </form>

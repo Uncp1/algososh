@@ -1,4 +1,3 @@
-import { type } from "os";
 import { ElementStates } from "../../../types/element-states";
 
 export type SortElementType = {
@@ -8,7 +7,7 @@ export type SortElementType = {
 };
 
 export type SortArrayType = {
-  array: [];
+  array: SortElementType[];
   direction: "descending" | "ascending";
 };
 
