@@ -2,6 +2,7 @@ import {
   ChangeEventHandler,
   FC,
   FormEventHandler,
+  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -26,6 +27,11 @@ export const ListPage: FC = () => {
 
   const list = useMemo(() => new LinkedList<string>(), []);
   console.log(list);
+  useEffect(() => {
+    list.fromArray(initialArray);
+    setArray(list.toArray());
+    return () => list.reset();
+  }, []);
 
   const handleAddNewHead = async () => {
     setIsFormSubmitting(true);
@@ -35,48 +41,6 @@ export const ListPage: FC = () => {
     setIsFormSubmitting(false);
   };
 
-  const reverseInput = async () => {
-    let start = 0;
-    let end = valuesArray.length - 1;
-    while (start < end) {
-      setFirstPointer(start);
-      setSecondPointer(end);
-      await delay(DELAY_IN_MS);
-      swap(valuesArray, start, end);
-      setValuesArray(valuesArray);
-      start++;
-      end--;
-    }
-    setFirstPointer(valuesArray.length);
-    setSecondPointer(valuesArray.length);
-    setIsFormSubmitting(false);
-  };
-  /*
-  const handleAddNewHead: ReactEventHandler<HTMLButtonElement> = async () => {
-    setIsDataLoading(true);
-    setStackState("add");
-    await delay(SHORT_DELAY_IN_MS);
-    stack.push(value);
-    setValue("");
-    setIsDataLoading(false);
-    setStackState("");
-  };
-
-  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setValue(e.currentTarget.value);
-    setValuesArray(e.currentTarget.value.split(""));
-    setResultVisibility(false);
-    setFirstPointer(0);
-    setSecondPointer(valuesArray.length - 1);
-  };
-
-  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault();
-    setResultVisibility(true);
-    setIsFormSubmitting(true);
-    setValue("");
-    await reverseInput();
-  }; */
   return (
     <SolutionLayout title="Связный список">
       <form className={styles.form}>
