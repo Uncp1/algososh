@@ -23,3 +23,22 @@
 .form__button_type_index {
   width: 100%;
 }
+
+.wrapper {
+  align-items: center;
+  align-self: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 64px 16px;
+  justify-content: flex-start;
+  list-style: none;
+  margin: 0;
+  max-width: 944px;
+  padding: 0;
+}
+
+.wrapper__circle {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}

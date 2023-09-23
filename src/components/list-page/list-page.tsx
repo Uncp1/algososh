@@ -19,21 +19,23 @@ import { LinkedList, LinkedListNode } from "./linked-list";
 export const ListPage: FC = () => {
   const [value, setValue] = useState<string>("");
   const [index, setIndex] = useState<string>("");
-  const [valuesArray, setValuesArray] = useState<string[]>([]);
+  const [valuesArray, setValuesArray] = useState<LinkedListNode<string>[]>([]);
+  const [initArray] = useState<string[]>(["0", "34", "8", "1"]);
   const [resultVisibility, setResultVisibility] = useState<boolean>(false);
   const [isFormSubmitting, setIsFormSubmitting] = useState<boolean>(false);
   const [firstPointer, setFirstPointer] = useState<number>(0);
   const [secondPointer, setSecondPointer] = useState<number>(0);
 
   const list = useMemo(() => new LinkedList<string>(), []);
-  console.log(list);
-  /*useEffect(() => {
-    list.fromArray(initialArray);
-    setArray(list.toArray());
+
+  useEffect(() => {
+    list.fromArray(initArray);
+    setValuesArray(list.toArray());
     return () => list.reset();
-  }, []);
-*/
+  }, [initArray, list]);
+
   const handleAddNewHead = async () => {
+    console.log(valuesArray);
     setIsFormSubmitting(true);
     await delay(SHORT_DELAY_IN_MS);
     list.prepend(value);
@@ -123,8 +125,8 @@ export const ListPage: FC = () => {
       </form>
       <ul className={styles.wrapper}>
         {valuesArray.length > 0 ? (
-          valuesArray.map((item: any, index: number) => (
-            <li className={styles.wrapper_element} key={index}>
+          valuesArray.map((item: LinkedListNode<string>, index: number) => (
+            <li className={styles.wrapper__circle} key={index}>
               <Circle
               //insert your dick here
               />
