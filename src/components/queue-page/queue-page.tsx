@@ -83,7 +83,7 @@ export const QueuePage: FC = () => {
             type={"submit"}
             text={"Добавить"}
             isLoader={queueState === "add"}
-            disabled={!value && queue.length === 7} // ungaBunga
+            disabled={!value}
           />
 
           <Button

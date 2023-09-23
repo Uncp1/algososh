@@ -27,12 +27,12 @@ export const ListPage: FC = () => {
 
   const list = useMemo(() => new LinkedList<string>(), []);
   console.log(list);
-  useEffect(() => {
+  /*useEffect(() => {
     list.fromArray(initialArray);
     setArray(list.toArray());
     return () => list.reset();
   }, []);
-
+*/
   const handleAddNewHead = async () => {
     setIsFormSubmitting(true);
     await delay(SHORT_DELAY_IN_MS);
