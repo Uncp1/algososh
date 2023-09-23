@@ -5,7 +5,7 @@ import { Input } from "../ui/input/input";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { Circle } from "../ui/circle/circle";
 import { delay } from "../../helpers/utils";
-import { SHORT_DELAY_IN_MS } from "../../constants/delays";
+import { DELAY_IN_MS } from "../../constants/delays";
 import { LinkedList, LinkedListNode } from "./linked-list";
 import { ArrowIcon } from "../ui/icons/arrow-icon";
 import {
@@ -38,24 +38,32 @@ export const ListPage: FC = () => {
   const handleAddNewHead: ReactEventHandler<HTMLButtonElement> = async () => {
     setIsFormSubmitting(true);
     setAnimationState(LinkedListStates.AddToHead);
-    await delay(SHORT_DELAY_IN_MS);
+    setActiveIndex(0);
+    await delay(DELAY_IN_MS);
+    setActiveIndex(0);
     list.prepend(value);
     setValuesArray(list.toArray());
     setAnimationState(LinkedListStates.Success);
+    await delay(DELAY_IN_MS);
     setValue("");
-    await delay(SHORT_DELAY_IN_MS);
+    setAnimationState(LinkedListStates.Empty);
+    setActiveIndex(null);
     setIsFormSubmitting(false);
   };
 
   const handleAddNewTail: ReactEventHandler<HTMLButtonElement> = async () => {
     setIsFormSubmitting(true);
     setAnimationState(LinkedListStates.AddToTail);
-    await delay(SHORT_DELAY_IN_MS);
+    setActiveIndex(valuesArray.length - 1);
+    await delay(DELAY_IN_MS);
+    setActiveIndex(valuesArray.length);
     list.append(value);
     setValuesArray(list.toArray());
     setAnimationState(LinkedListStates.Success);
+    await delay(DELAY_IN_MS);
     setValue("");
-    await delay(SHORT_DELAY_IN_MS);
+    setAnimationState(LinkedListStates.Empty);
+    setActiveIndex(null);
     setIsFormSubmitting(false);
   };
 
@@ -63,7 +71,7 @@ export const ListPage: FC = () => {
     setIsFormSubmitting(true);
     setAnimationState(LinkedListStates.DeleteFromHead);
     setActiveIndex(0);
-    await delay(SHORT_DELAY_IN_MS);
+    await delay(DELAY_IN_MS);
     list.deleteHead();
     setValuesArray(list.toArray());
     setActiveIndex(null);
@@ -74,8 +82,8 @@ export const ListPage: FC = () => {
   const handleDeleteTail: ReactEventHandler<HTMLButtonElement> = async () => {
     setIsFormSubmitting(true);
     setAnimationState(LinkedListStates.DeleteFromTail);
-    setActiveIndex(0);
-    await delay(SHORT_DELAY_IN_MS);
+    setActiveIndex(valuesArray.length - 1);
+    await delay(DELAY_IN_MS);
     list.deleteTail();
     setValuesArray(list.toArray());
     setActiveIndex(null);
@@ -86,16 +94,23 @@ export const ListPage: FC = () => {
   const handleAddByIndex: ReactEventHandler<HTMLButtonElement> = async () => {
     setIsFormSubmitting(true);
     setAnimationState(LinkedListStates.AddByIndex);
-    const addIndex = Number(index); // prevents null value
+    const addIndex = Number(index);
     setActiveIndex(addIndex);
     setIsIndexInSearch(true);
-    await delay(SHORT_DELAY_IN_MS);
+    let i = 0;
+    while (i <= addIndex) {
+      setActiveIndex(i);
+      await delay(DELAY_IN_MS);
+      i++;
+    }
     list.addByIndex(value, addIndex);
     setValuesArray(list.toArray());
-    setActiveIndex(null);
-    setIsIndexInSearch(false);
+    setAnimationState(LinkedListStates.Success);
+    await delay(DELAY_IN_MS);
     setValue("");
     setIndex("");
+    setActiveIndex(null);
+    setIsIndexInSearch(false);
     setAnimationState(LinkedListStates.Empty);
     setIsFormSubmitting(false);
   };
@@ -108,77 +123,74 @@ export const ListPage: FC = () => {
     const delIndex = Number(index);
     setActiveIndex(delIndex);
     setIsIndexInSearch(true);
-    await delay(SHORT_DELAY_IN_MS);
+    let i = 0;
+    while (i <= delIndex) {
+      setActiveIndex(i);
+      await delay(DELAY_IN_MS);
+      i++;
+    }
     list.deleteByIndex(delIndex);
     setValuesArray(list.toArray());
-    setActiveIndex(null);
-    setIsIndexInSearch(false);
     setValue("");
     setIndex("");
+    setActiveIndex(null);
+    setIsIndexInSearch(false);
     setAnimationState(LinkedListStates.Empty);
     setIsFormSubmitting(false);
   };
 
-  const renderCircleValue = (item: LinkedListNode<string>, index: number) => {
-    if (value && index === activeIndex) return item.value;
-    if (index === activeIndex) return "";
+  const renderCircleValue = (
+    item: LinkedListNode<string>,
+    itemIndex: number
+  ) => {
+    if (value && itemIndex === activeIndex) return item.value;
+    if (itemIndex === activeIndex) return "";
     return item.value;
   };
 
-  const findState = (
-    item: LinkedListNode<string>,
-    index: number
-  ): ElementStatesType => {
-    if (activeIndex && isIndexInSearch && index < activeIndex) {
+  const findState = (itemIndex: number): ElementStatesType => {
+    if (activeIndex && isIndexInSearch && itemIndex < activeIndex) {
       return ElementStates.Changing;
     }
     if (
-      activeIndex &&
-      isIndexInSearch &&
       animationState === LinkedListStates.Success &&
-      index === activeIndex
+      itemIndex === activeIndex
     ) {
+      console.log(itemIndex);
+
       return ElementStates.Modified;
     }
     return ElementStates.Default;
   };
 
-  const findHead = (item: LinkedListNode<string>, index: number) => {
+  const findHead = (itemIndex: number) => {
     if (
-      index === activeIndex &&
+      itemIndex === activeIndex &&
       (animationState === LinkedListStates.AddToHead ||
         animationState === LinkedListStates.AddToTail ||
         animationState === LinkedListStates.AddByIndex)
     ) {
       return (
-        <Circle
-          state={ElementStates.Changing}
-          isSmall={true}
-          letter={item.value}
-        />
+        <Circle state={ElementStates.Changing} isSmall={true} letter={value} />
       );
-    } else if (index === 0) {
+    } else if (itemIndex === 0) {
       return "head";
     } else {
       return "";
     }
   };
 
-  const findTail = (item: LinkedListNode<string>, index: number) => {
+  const findTail = (itemIndex: number) => {
     if (
-      index === activeIndex &&
+      itemIndex === activeIndex &&
       (animationState === LinkedListStates.DeleteFromHead ||
         animationState === LinkedListStates.DeleteFromTail ||
         animationState === LinkedListStates.DeleteByIndex)
     ) {
       return (
-        <Circle
-          state={ElementStates.Changing}
-          isSmall={true}
-          letter={item.value}
-        />
+        <Circle state={ElementStates.Changing} isSmall={true} letter={value} />
       );
-    } else if (index === valuesArray.length - 1) {
+    } else if (itemIndex === valuesArray.length - 1) {
       return "tail";
     } else {
       return "";
@@ -277,16 +289,14 @@ export const ListPage: FC = () => {
               <Circle
                 letter={renderCircleValue(item, index)}
                 index={index}
-                state={findState(item, index)}
-                tail={findTail(item, index)}
-                head={findHead(item, index)}
+                state={findState(index)}
+                tail={findTail(index)}
+                head={findHead(index)}
               />
               {!(valuesArray.length - 1 === index) && (
                 <ArrowIcon
                   fill={
-                    activeIndex &&
-                    animationState === LinkedListStates.AddByIndex &&
-                    index < activeIndex
+                    isIndexInSearch && activeIndex && index < activeIndex
                       ? "#d252e1"
                       : "#0032ff"
                   }
