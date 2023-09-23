@@ -81,14 +81,14 @@ export const StackPage: FC = () => {
             type={"submit"}
             text={"Добавить"}
             isLoader={stackState === "add"}
-            disabled={!value}
+            disabled={!value || isDataLoading}
           />
 
           <Button
             type={"button"}
             text={"Удалить"}
             isLoader={stackState === "delete"}
-            disabled={!isStackVisible}
+            disabled={!isStackVisible || isDataLoading}
             onClick={removeFromStack}
           />
         </div>
@@ -97,7 +97,7 @@ export const StackPage: FC = () => {
           type={"reset"}
           text={"Очистить"}
           isLoader={stackState === "clear"}
-          disabled={!isStackVisible}
+          disabled={!isStackVisible || isDataLoading}
           onClick={clearStack}
         />
       </form>

@@ -26,6 +26,7 @@ export class LinkedList<T> {
   prepend(value: T) {
     const newNode = new LinkedListNode(value);
     if (this.head) this.head.prev = newNode;
+    newNode.next = this.head;
     this.head = newNode;
     if (!this.tail) this.tail = newNode;
     return newNode;
@@ -34,6 +35,7 @@ export class LinkedList<T> {
   append(value: T) {
     const newNode = new LinkedListNode(value);
     if (this.tail) this.tail.next = newNode;
+    newNode.prev = this.tail;
     this.tail = newNode;
     if (!this.head) this.head = newNode;
     return newNode;
