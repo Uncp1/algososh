@@ -37,7 +37,6 @@ export const FibonacciPage: React.FC = () => {
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setValue(e.currentTarget.value);
     setResultVisibility(false);
-    if (valuesArray !== []) setValuesArray([]);
   };
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {

@@ -156,8 +156,6 @@ export const ListPage: FC = () => {
       animationState === LinkedListStates.Success &&
       itemIndex === activeIndex
     ) {
-      console.log(itemIndex);
-
       return ElementStates.Modified;
     }
     return ElementStates.Default;
@@ -180,7 +178,7 @@ export const ListPage: FC = () => {
     }
   };
 
-  const findTail = (itemIndex: number) => {
+  const findTail = (item: LinkedListNode<string>, itemIndex: number) => {
     if (
       itemIndex === activeIndex &&
       (animationState === LinkedListStates.DeleteFromHead ||
@@ -188,7 +186,11 @@ export const ListPage: FC = () => {
         animationState === LinkedListStates.DeleteByIndex)
     ) {
       return (
-        <Circle state={ElementStates.Changing} isSmall={true} letter={value} />
+        <Circle
+          state={ElementStates.Changing}
+          isSmall={true}
+          letter={item.value}
+        />
       );
     } else if (itemIndex === valuesArray.length - 1) {
       return "tail";
@@ -290,7 +292,7 @@ export const ListPage: FC = () => {
                 letter={renderCircleValue(item, index)}
                 index={index}
                 state={findState(index)}
-                tail={findTail(index)}
+                tail={findTail(item, index)}
                 head={findHead(index)}
               />
               {!(valuesArray.length - 1 === index) && (

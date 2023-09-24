@@ -1,4 +1,4 @@
-import { FC, ReactEventHandler, useState } from "react";
+import { FC, ReactEventHandler, useEffect, useState } from "react";
 import styles from "./sorting-page.module.css";
 import { Button } from "../ui/button/button";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
@@ -71,8 +71,18 @@ export const SortingPage: FC = () => {
     setIsSortingInProgress(false);
   };
 
+  useEffect(() => {
+    const newArray = createRandomArray({
+      minLength: 3,
+      maxLength: 17,
+      minValue: 0,
+      maxValue: 100,
+    });
+    setValuesArray(newArray);
+  }, []);
+
   return (
-    <SolutionLayout title="Строка">
+    <SolutionLayout title="Сортировка массива">
       <form className={styles.form}>
         <fieldset
           className={`${styles.form_fieldset} ${styles.form_fieldset_type_radio}`}
