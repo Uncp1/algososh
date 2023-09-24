@@ -1,0 +1,39 @@
+.form {
+  display: flex;
+  align-items: center;
+  gap: 52px;
+  justify-content: space-between;
+  margin: 0 auto 48px;
+  max-width: 980px;
+}
+.form_fieldset {
+  width: 100%;
+  border: none;
+  display: flex;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.form_fieldset_type_radio {
+  max-width: 221px;
+  gap: 40px;
+}
+
+.form_fieldset_type_buttons {
+  gap: 12px;
+}
+
+.form_reset {
+  margin-left: auto;
+}
+
+.result {
+  align-items: flex-end;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  max-width: 944px;
+  height: 340px;
+}

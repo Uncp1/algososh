@@ -1,0 +1,22 @@
+.form {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 829px;
+  gap: 80px;
+  margin: auto;
+}
+
+.inputs {
+  display: flex;
+  gap: 12px;
+}
+
+.result {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 64px 16px;
+  max-width: 944px;
+  margin: 48px auto;
+}
