@@ -53,6 +53,7 @@ export const StringComponent: React.FC = () => {
     <SolutionLayout title="Строка">
       <form onSubmit={handleSubmit} className={styles.form}>
         <Input
+          data-testId=""
           onChange={handleChange}
           value={value}
           maxLength={11}
