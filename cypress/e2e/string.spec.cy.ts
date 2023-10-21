@@ -3,7 +3,7 @@ import {
   submitButtonSelector,
 } from "../../src/constants/test-selectors";
 
-describe("string", () => {
+describe("string test", () => {
   beforeEach(() => {
     cy.visit("http://localhost:3000/recursion");
   });
@@ -18,7 +18,12 @@ describe("string", () => {
   });
 
   it("button should be enabled when input isn't empty", () => {
-    cy.get(inputSelector).should("have.value", "string");
+    cy.get(inputSelector).type("test");
     cy.get(submitButtonSelector).should("not.be.disabled");
+  });
+
+  it("animation works correctly for even number of characters", () => {
+    cy.get(inputSelector).type("test");
+    cy.get(submitButtonSelector).click();
   });
 });
