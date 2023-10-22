@@ -1,3 +1,5 @@
+import { ElementStates } from "../types/states";
+
 export const inputSelector = '[data-testId="input"]';
 
 export const submitButtonSelector = '[data-testId="submit-button"]';
@@ -6,4 +8,7 @@ export const addButtonSelector = '[data-testId="add-button"]';
 export const deleteButtonSelector = '[data-testId="delete-button"]';
 export const resetButtonSelector = '[data-testId="reset-button"]';
 
-export const Circle = `[class*=circle_${CircleCl.Circle}]`;
+export const circleSelector = '[class*="circle"]';
+export const circleContentSelector = '[class*="circle_content"]';
+export const circleStateChgSelector = `[class*=circle_${ElementStates.Changing}]`;
+export const circleStateDefSelector = `[class*=circle_${ElementStates.Default}]`;
