@@ -46,7 +46,7 @@ export const StringComponent: React.FC = () => {
     <SolutionLayout title="Строка">
       <form onSubmit={handleSubmit} className={styles.form}>
         <Input
-          data-testId="input"
+          data-testid="input"
           onChange={handleChange}
           value={value}
           maxLength={11}
@@ -55,7 +55,7 @@ export const StringComponent: React.FC = () => {
           disabled={isFormSubmitted}
         />
         <Button
-          data-testId="submit-button"
+          data-testid="submit-button"
           type={"submit"}
           text={"Развернуть"}
           isLoader={isFormSubmitted}

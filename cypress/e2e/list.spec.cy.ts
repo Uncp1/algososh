@@ -6,9 +6,9 @@ import {
   submitButtonSelector,
 } from "../../src/constants/test-selectors";
 
-describe("string test", () => {
+describe("list test", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:3000/recursion");
+    cy.visit("http://localhost:3000/list");
   });
 
   afterEach(() => {
@@ -48,6 +48,9 @@ describe("string test", () => {
       .eq(3)
       .should("have.css", "border", "4px solid rgb(210, 82, 225)");
     cy.get(circleSelector)
+      .eq(2)
+      .should("have.css", "border", "4px solid rgbrgb(0, 50, 255)");
+    cy.get(circleSelector)
       .eq(0)
       .should("have.css", "border", "4px solid rgb(127, 224, 81)");
     cy.get(circleSelector)
@@ -56,19 +59,6 @@ describe("string test", () => {
 
     cy.get(circleSelector).eq(0).should("contain", "t");
     cy.get(circleSelector).eq(4).should("contain", "r");
-
-    cy.wait(DELAY_IN_MS);
-
-    cy.get(circleSelector).each((circle) => {
-      cy.wrap(circle).should(
-        "have.css",
-        "border",
-        "4px solid rgb(127, 224, 81)"
-      );
-    });
-
-    cy.get(circleSelector).eq(1).should("contain", "c");
-    cy.get(circleSelector).eq(3).should("contain", "e");
   });
 
   it("animation works correctly for even number of characters", () => {

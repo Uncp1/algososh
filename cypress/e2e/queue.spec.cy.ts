@@ -24,7 +24,7 @@ const deleteCircle = (value: string) => {
   cy.wait(SHORT_DELAY_IN_MS);
 };
 
-describe("stack test", () => {
+describe("queue test", () => {
   beforeEach(() => {
     cy.visit("http://localhost:3000/queue");
   });
