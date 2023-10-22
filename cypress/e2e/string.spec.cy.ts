@@ -1,6 +1,5 @@
 import { DELAY_IN_MS } from "../../src/constants/delays";
 import {
-  circleContentSelector,
   circleSelector,
   inputSelector,
   submitButtonSelector,

@@ -204,6 +204,7 @@ export const ListPage: FC = () => {
       <form className={styles.form}>
         <fieldset className={styles.form__fieldset}>
           <Input
+            data-testid="input"
             disabled={isFormSubmitting || valuesArray.length >= 7}
             value={value}
             maxLength={4}
@@ -213,6 +214,7 @@ export const ListPage: FC = () => {
             placeholder={"Введите значение"}
           />
           <Button
+            data-testid="add-head"
             disabled={isFormSubmitting || !value}
             isLoader={animationState === LinkedListStates.AddToHead}
             type={"button"}
@@ -221,6 +223,7 @@ export const ListPage: FC = () => {
             onClick={handleAddNewHead}
           />
           <Button
+            data-testid="add-tail"
             disabled={isFormSubmitting || !value}
             isLoader={animationState === LinkedListStates.AddToTail}
             type={"button"}
@@ -229,6 +232,7 @@ export const ListPage: FC = () => {
             onClick={handleAddNewTail}
           />
           <Button
+            data-testid="delete-head"
             disabled={isFormSubmitting || valuesArray.length <= 0}
             isLoader={animationState === LinkedListStates.DeleteFromHead}
             type={"button"}
@@ -237,6 +241,7 @@ export const ListPage: FC = () => {
             onClick={handleDeleteHead}
           />
           <Button
+            data-testid="delete-tail"
             disabled={isFormSubmitting || valuesArray.length <= 0}
             isLoader={animationState === LinkedListStates.DeleteFromTail}
             type={"button"}
@@ -247,6 +252,7 @@ export const ListPage: FC = () => {
         </fieldset>
         <fieldset className={styles.form__fieldset}>
           <Input
+            data-testid="input-index"
             disabled={isFormSubmitting}
             value={index}
             onChange={(e) => setIndex(e.currentTarget.value)}
@@ -257,6 +263,7 @@ export const ListPage: FC = () => {
             placeholder={"Введите индекс"}
           />
           <Button
+            data-testid="add-button"
             disabled={
               !value ||
               !index ||
@@ -270,6 +277,7 @@ export const ListPage: FC = () => {
             onClick={handleAddByIndex}
           />
           <Button
+            data-testid="delete-button"
             disabled={
               !index ||
               isFormSubmitting ||
