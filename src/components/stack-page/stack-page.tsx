@@ -68,7 +68,7 @@ export const StackPage: FC = () => {
       <form onSubmit={putOnStack} className={styles.form}>
         <div className={styles.inputs}>
           <Input
-            data-testId="input"
+            data-testid="input"
             onChange={handleChange}
             value={value}
             maxLength={4}
@@ -79,7 +79,7 @@ export const StackPage: FC = () => {
             autoComplete={"off"}
           />
           <Button
-            data-testId="add-button"
+            data-testid="add-button"
             type={"submit"}
             text={"Добавить"}
             isLoader={stackState === "add"}
@@ -87,7 +87,7 @@ export const StackPage: FC = () => {
           />
 
           <Button
-            data-testId="delete-button"
+            data-testid="delete-button"
             type={"button"}
             text={"Удалить"}
             isLoader={stackState === "delete"}
@@ -97,7 +97,7 @@ export const StackPage: FC = () => {
         </div>
 
         <Button
-          data-testId="reset-button"
+          data-testid="reset-button"
           type={"reset"}
           text={"Очистить"}
           isLoader={stackState === "clear"}
