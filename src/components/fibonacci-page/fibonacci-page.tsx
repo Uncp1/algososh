@@ -44,6 +44,7 @@ export const FibonacciPage: React.FC = () => {
     <SolutionLayout title="Последовательность Фибоначчи">
       <form onSubmit={handleSubmit} className={styles.form}>
         <Input
+          data-testid="input"
           onChange={handleChange}
           value={value}
           type={"number"}
@@ -56,6 +57,7 @@ export const FibonacciPage: React.FC = () => {
           autoComplete={"off"}
         />
         <Button
+          data-testid="submit-button"
           type={"submit"}
           text={"Рассчитать"}
           isLoader={isFormSubmitted}
