@@ -5,9 +5,9 @@ import {
   submitButtonSelector,
 } from "../../src/constants/test-selectors";
 
-describe("fibonacci test", () => {
+describe("test fibonacci sequence", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:3000/fibonacci");
+    cy.visit("/fibonacci");
   });
 
   afterEach(() => {
