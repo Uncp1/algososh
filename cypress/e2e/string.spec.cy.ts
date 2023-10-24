@@ -7,7 +7,7 @@ import {
 
 describe("string test", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:3000/recursion");
+    cy.visit("/recursion");
   });
 
   afterEach(() => {

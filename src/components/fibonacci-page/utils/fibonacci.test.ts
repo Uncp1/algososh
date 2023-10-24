@@ -1,4 +1,4 @@
-import { getFibonacciArray } from "./utils/sequence";
+import { getFibonacciArray } from "./sequence";
 
 describe("function creates correct sequence", () => {
   it("for i=0", () => {

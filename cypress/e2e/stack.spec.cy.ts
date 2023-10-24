@@ -30,7 +30,7 @@ const deleteCircle = (value: string, length: number) => {
 
 describe("stack test", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:3000/stack");
+    cy.visit("/stack");
   });
 
   afterEach(() => {

@@ -1,4 +1,4 @@
-import { reverseInput } from "./utils/reverseInput";
+import { reverseInput } from "./reverseInput";
 
 describe("reverse is successful", () => {
   const setValuesArray = jest.fn();
@@ -40,8 +40,6 @@ describe("reverse is successful", () => {
   it("for a string of one character", async () => {
     const value = "1";
     const valueArray = value.split("");
-    const expectedValue = "1";
-    const expectedValueArray = expectedValue.split("");
 
     await reverseInput(
       valueArray,
