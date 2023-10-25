@@ -7,6 +7,7 @@ import { Circle } from "../ui/circle/circle";
 import { nanoid } from "nanoid";
 import { delay } from "../../helpers/utils";
 import { DELAY_IN_MS } from "../../constants/delays";
+import { getFibonacciArray } from "./utils/sequence";
 
 export const FibonacciPage: React.FC = () => {
   const [value, setValue] = useState<number | string>("");
@@ -16,15 +17,7 @@ export const FibonacciPage: React.FC = () => {
   const [isFormSubmitted, setIsFormSubmitted] = useState<boolean>(false);
 
   const createFibonacciSequence = async () => {
-    let fibonacciArray: number[] = [];
-    for (let i = 0; i < +value + 1; i++) {
-      if (fibonacciArray.length === 0 || fibonacciArray.length === 1) {
-        fibonacciArray.push(1);
-      } else {
-        fibonacciArray.push(fibonacciArray[i - 2] + fibonacciArray[i - 1]);
-      }
-    }
-
+    const fibonacciArray = getFibonacciArray(Number(value));
     let i = 0;
     while (i <= value) {
       setValuesArray((arr) => [...arr, fibonacciArray[i]]); // rerender circles
@@ -37,7 +30,6 @@ export const FibonacciPage: React.FC = () => {
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setValue(e.currentTarget.value);
     setResultVisibility(false);
-    if (valuesArray !== []) setValuesArray([]);
   };
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
@@ -45,12 +37,14 @@ export const FibonacciPage: React.FC = () => {
     setResultVisibility(true);
     setIsFormSubmitted(true);
     setValue("");
+    setValuesArray([]);
     await createFibonacciSequence();
   };
   return (
     <SolutionLayout title="Последовательность Фибоначчи">
       <form onSubmit={handleSubmit} className={styles.form}>
         <Input
+          data-testid="input"
           onChange={handleChange}
           value={value}
           type={"number"}
@@ -63,6 +57,7 @@ export const FibonacciPage: React.FC = () => {
           autoComplete={"off"}
         />
         <Button
+          data-testid="submit-button"
           type={"submit"}
           text={"Рассчитать"}
           isLoader={isFormSubmitted}

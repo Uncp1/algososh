@@ -3,6 +3,7 @@ import Marquee from "react-fast-marquee";
 import { Link } from "react-router-dom";
 
 import styles from "./main-page.module.css";
+import * as testId from "../../constants/routes";
 
 interface MainPageProps {
   extraClass?: string;
@@ -22,22 +23,46 @@ export const MainPage: React.FC<MainPageProps> = ({ extraClass = "" }) => {
         </p>
       </div>
       <div className={styles.cards_box}>
-        <Link className={styles.link} to="/recursion">
+        <Link
+          data-testid={testId.LINK_STRING_PAGE_TEST_ID}
+          className={styles.link}
+          to="/recursion"
+        >
           <div className={`${styles.card} ${styles.string}`} />
         </Link>
-        <Link className={styles.link} to="/fibonacci">
+        <Link
+          data-testid={testId.LINK_FIBONACCI_PAGE_TEST_ID}
+          className={styles.link}
+          to="/fibonacci"
+        >
           <div className={`${styles.card} ${styles.fibonacci}`} />
         </Link>
-        <Link className={styles.link} to="/sorting">
+        <Link
+          data-testid={testId.LINK_ARRAY_PAGE_TEST_ID}
+          className={styles.link}
+          to="/sorting"
+        >
           <div className={`${styles.card} ${styles.arr}`} />
         </Link>
-        <Link className={styles.link} to="/stack">
+        <Link
+          data-testid={testId.LINK_STACK_PAGE_TEST_ID}
+          className={styles.link}
+          to="/stack"
+        >
           <div className={`${styles.card} ${styles.stack}`} />
         </Link>
-        <Link className={styles.link} to="/queue">
+        <Link
+          data-testid={testId.LINK_QUEUE_PAGE_TEST_ID}
+          className={styles.link}
+          to="/queue"
+        >
           <div className={`${styles.card} ${styles.queue}`} />
         </Link>
-        <Link className={styles.link} to="/list">
+        <Link
+          data-testid={testId.LINK_LIST_PAGE_TEST_ID}
+          className={styles.link}
+          to="/list"
+        >
           <div className={`${styles.card} ${styles.list}`} />
         </Link>
       </div>

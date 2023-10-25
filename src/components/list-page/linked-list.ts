@@ -24,16 +24,18 @@ export class LinkedList<T> {
   }
 
   prepend(value: T) {
-    const newNode = new LinkedListNode(value, this.head);
+    const newNode = new LinkedListNode(value);
     if (this.head) this.head.prev = newNode;
+    newNode.next = this.head;
     this.head = newNode;
     if (!this.tail) this.tail = newNode;
     return newNode;
   }
 
   append(value: T) {
-    const newNode = new LinkedListNode(value, this.head);
-    if (this.tail) this.tail.prev = newNode;
+    const newNode = new LinkedListNode(value);
+    if (this.tail) this.tail.next = newNode;
+    newNode.prev = this.tail;
     this.tail = newNode;
     if (!this.head) this.head = newNode;
     return newNode;
@@ -119,5 +121,25 @@ export class LinkedList<T> {
       deletedNode.next.prev = deletedNode.prev || null;
     }
     return deletedNode;
+  }
+
+  fromArray(values: T[]): LinkedList<T> {
+    values.forEach((value) => this.append(value));
+    return this;
+  }
+
+  toArray(): LinkedListNode<T>[] {
+    const nodes: LinkedListNode<T>[] = [];
+    let currentNode = this.head;
+    while (currentNode) {
+      nodes.push(currentNode);
+      currentNode = currentNode.next;
+    }
+    return nodes;
+  }
+
+  reset(): void {
+    this.head = null;
+    this.tail = null;
   }
 }

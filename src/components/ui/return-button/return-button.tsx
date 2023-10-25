@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./return-button.module.css";
 import { ReturnIcon } from "../icons/return-icon";
+import { LINK_HOMEPAGE_TEST_ID } from "../../../constants/routes";
 
 interface ButtonProps extends React.HTMLProps<HTMLButtonElement> {
   type?: "button" | "submit" | "reset";
@@ -13,6 +14,7 @@ export const ReturnButton: React.FC<ButtonProps> = ({
 }) => {
   return (
     <button
+      data-testid={LINK_HOMEPAGE_TEST_ID}
       className={`${styles.button} ${extraClass}`}
       type="button"
       {...rest}

@@ -71,6 +71,7 @@ export const QueuePage: FC = () => {
       <form onSubmit={addToQueue} className={styles.form}>
         <div className={styles.inputs}>
           <Input
+            data-testid="input"
             onChange={handleChange}
             value={value}
             maxLength={4}
@@ -80,26 +81,29 @@ export const QueuePage: FC = () => {
             disabled={isDataLoading}
           />
           <Button
+            data-testid="add-button"
             type={"submit"}
             text={"Добавить"}
             isLoader={queueState === "add"}
-            disabled={!value && queue.length === 7} // ungaBunga
+            disabled={!value || isDataLoading}
           />
 
           <Button
+            data-testid="delete-button"
             type={"button"}
             text={"Удалить"}
             isLoader={queueState === "delete"}
-            disabled={queue.length === 0}
+            disabled={queue.length === 0 || isDataLoading}
             onClick={removeFromStack}
           />
         </div>
 
         <Button
+          data-testid="reset-button"
           type={"reset"}
           text={"Очистить"}
           isLoader={queueState === "clear"}
-          disabled={queue.length === 0}
+          disabled={queue.length === 0 || isDataLoading}
           onClick={clearStack}
         />
       </form>

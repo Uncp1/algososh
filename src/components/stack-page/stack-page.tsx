@@ -68,6 +68,7 @@ export const StackPage: FC = () => {
       <form onSubmit={putOnStack} className={styles.form}>
         <div className={styles.inputs}>
           <Input
+            data-testid="input"
             onChange={handleChange}
             value={value}
             maxLength={4}
@@ -78,26 +79,29 @@ export const StackPage: FC = () => {
             autoComplete={"off"}
           />
           <Button
+            data-testid="add-button"
             type={"submit"}
             text={"Добавить"}
             isLoader={stackState === "add"}
-            disabled={!value}
+            disabled={!value || isDataLoading}
           />
 
           <Button
+            data-testid="delete-button"
             type={"button"}
             text={"Удалить"}
             isLoader={stackState === "delete"}
-            disabled={!isStackVisible}
+            disabled={!isStackVisible || isDataLoading}
             onClick={removeFromStack}
           />
         </div>
 
         <Button
+          data-testid="reset-button"
           type={"reset"}
           text={"Очистить"}
           isLoader={stackState === "clear"}
-          disabled={!isStackVisible}
+          disabled={!isStackVisible || isDataLoading}
           onClick={clearStack}
         />
       </form>

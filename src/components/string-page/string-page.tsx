@@ -5,8 +5,9 @@ import { Input } from "../ui/input/input";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { Circle } from "../ui/circle/circle";
 import { nanoid } from "nanoid";
-import { changeCircleColor, delay, swap } from "../../helpers/utils";
+import { changeCircleColor } from "../../helpers/utils";
 import { DELAY_IN_MS } from "../../constants/delays";
+import { reverseInput } from "./utils/reverseInput";
 
 export const StringComponent: React.FC = () => {
   const [value, setValue] = useState<string>("");
@@ -15,23 +16,6 @@ export const StringComponent: React.FC = () => {
   const [isFormSubmitted, setIsFormSubmitted] = useState<boolean>(false);
   const [firstPointer, setFirstPointer] = useState<number>(0);
   const [secondPointer, setSecondPointer] = useState<number>(0);
-
-  const reverseInput = async () => {
-    let start = 0;
-    let end = valuesArray.length - 1;
-    while (start < end) {
-      setFirstPointer(start);
-      setSecondPointer(end);
-      await delay(DELAY_IN_MS);
-      swap(valuesArray, start, end);
-      setValuesArray(valuesArray);
-      start++;
-      end--;
-    }
-    setFirstPointer(valuesArray.length);
-    setSecondPointer(valuesArray.length);
-    setIsFormSubmitted(false);
-  };
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setValue(e.currentTarget.value);
@@ -46,13 +30,23 @@ export const StringComponent: React.FC = () => {
     setResultVisibility(true);
     setIsFormSubmitted(true);
     setValue("");
-    await reverseInput();
+    await reverseInput(
+      valuesArray,
+      setValuesArray,
+      setFirstPointer,
+      setSecondPointer,
+      DELAY_IN_MS
+    );
+    setFirstPointer(valuesArray.length);
+    setSecondPointer(valuesArray.length);
+    setIsFormSubmitted(false);
   };
 
   return (
     <SolutionLayout title="Строка">
       <form onSubmit={handleSubmit} className={styles.form}>
         <Input
+          data-testid="input"
           onChange={handleChange}
           value={value}
           maxLength={11}
@@ -61,6 +55,7 @@ export const StringComponent: React.FC = () => {
           disabled={isFormSubmitted}
         />
         <Button
+          data-testid="submit-button"
           type={"submit"}
           text={"Развернуть"}
           isLoader={isFormSubmitted}
